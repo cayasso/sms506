@@ -1,23 +1,26 @@
 BABEL = ./node_modules/.bin/babel
+MOCHA = ./node_modules/.bin/mocha
 
 all: lib
 
 lib: src
+	@echo Building... >&2; \
 	$(BABEL) src -d lib
 
 clean:
+	@echo Cleaning... >&2; \
 	rm -rf lib/
 
 build:
 	@status=$$(git status ./src --porcelain); \
 		if test "x$${status}" != x; then \
-			echo Building... >&2; \
 			make lib >&2; \
 			git add ./lib >&2; \
 		fi
 
 test:
-	@./node_modules/.bin/mocha \
+	@make clean && make lib; \
+	$(MOCHA) \
 		--reporter spec \
 		--require should \
 		--require babel-core/register \

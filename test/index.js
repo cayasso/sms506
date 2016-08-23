@@ -3,7 +3,7 @@
 import url from 'url';
 import nock from 'nock';
 import should from 'should';
-import sms506 from '../src/index';
+import sms506 from '../lib/index';
 
 const API_KEY = 'abc123';
 
