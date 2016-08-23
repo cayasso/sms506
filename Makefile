@@ -23,6 +23,7 @@ test:
 	$(MOCHA) \
 		--reporter spec \
 		--require should \
+		--require babel-polyfill \
 		--require babel-core/register \
 		--recursive \
 		test
