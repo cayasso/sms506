@@ -1,6 +1,6 @@
 {
   "name": "sms506",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple sms506 API wrapper for NodeJS.",
   "main": "./lib/index",
   "author": {
