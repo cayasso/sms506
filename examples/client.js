@@ -1,6 +1,4 @@
-const sms506 = require('../lib/index');
-
-console.log(sms506)
+const sms506 = require('../lib/index')
 
 var smsApi = sms506("ABC123")
 

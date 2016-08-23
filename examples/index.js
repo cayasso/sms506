@@ -1,8 +1,9 @@
-'use strict';
+const sms506 = require('../lib/index')
 
-/**
- * Module dependencies.
- */
+var smsApi = sms506("ABC123")
 
-require('babel-core/register');
-require('./client');
+smsApi.smsin('08-2016').then(function(res) {
+  console.log(res)
+}).catch(function(e) {
+  console.log('error', e)
+})
