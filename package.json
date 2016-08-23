@@ -1,0 +1,36 @@
+{
+  "name": "sms506",
+  "version": "0.1.0",
+  "description": "Simple sms506 API wrapper for NodeJS.",
+  "main": "./lib/index",
+  "author": {
+    "name": "Jonathan Brumley",
+    "email": "cayasso@gmail.com"
+  },
+  "scripts": {
+    "test": "make test",
+    "build": "make build"
+  },
+  "repository": "cayasso/sms506",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.14.1",
+    "phone": "^1.0.8",
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-plugin-transform-async-to-generator": "6.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.11.5",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "mocha": "~3.0.0",
+    "nock": "^5.5.0",
+    "pre-commit": "^1.1.3",
+    "should": "^11.0.0"
+  },
+  "pre-commit": [
+    "test",
+    "build"
+  ]
+}
