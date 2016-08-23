@@ -27,7 +27,6 @@ describe('sms506', function () {
   });
 
   describe('#sms', function () {
-
     let smsApi = null;
     let query = null;
     let body = null;
@@ -102,7 +101,6 @@ describe('sms506', function () {
   });
 
   describe('#smsin', function () {
-
     let smsApi = null;
     let query = null;
     let body = null;
@@ -245,7 +243,6 @@ describe('sms506', function () {
   })
 
   describe('#balance', function () {
-
     let smsApi = null;
     let query = null;
     let body = null;
@@ -267,8 +264,6 @@ describe('sms506', function () {
         done()
       }).catch(done)
     })
-
   })
 
-
-});
+})
