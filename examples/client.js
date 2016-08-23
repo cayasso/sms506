@@ -1,4 +1,6 @@
-import sms506 from '../src/index';
+const sms506 = require('../lib/index');
+
+console.log(sms506)
 
 var smsApi = sms506("ABC123")
 

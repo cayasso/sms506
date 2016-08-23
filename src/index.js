@@ -1,5 +1,6 @@
 'use strict'
 
+import 'babel-polyfill'
 import phone from 'phone'
 import assert from 'assert'
 import moment from 'moment'
