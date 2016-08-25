@@ -4,6 +4,7 @@ import url from 'url';
 import nock from 'nock';
 import should from 'should';
 import sms506 from '../lib/index';
+import moment from 'moment'
 
 const API_KEY = 'abc123';
 
@@ -34,7 +35,7 @@ describe('sms506', function () {
     beforeEach(function () {
       smsApi = sms506(API_KEY)
       nock('https://api.sms506.com')
-        .get(`/sms/${API_KEY}/`)
+        .get(`/sms/${API_KEY}`)
         .query(true)
         .reply(200, function (uri, req) {
           query = url.parse(uri, true).query
@@ -124,6 +125,13 @@ describe('sms506', function () {
     })
 
     it('should send request by default with todays date if non provided', done => {
+      const date = moment().format('DD-MM-YYYY')
+      nock('https://api.sms506.com')
+        .get(`/smsin/${API_KEY}/json/${date}`)
+        .query(true)
+        .reply(200, function (uri, req) {
+          return []
+        })
       smsApi.smsin().then(data => {
         should(data).be.eql([])
         done()
@@ -227,6 +235,13 @@ describe('sms506', function () {
     })
 
     it('should send request for getting stats current month if its missing', done => {
+      nock('https://api.sms506.com')
+        .get(`/stat/${API_KEY}/${moment().format('M')}`)
+        .query(true)
+        .reply(200, function (uri, req) {
+          query = url.parse(uri, true).query
+          return 10
+        })
       smsApi.stats().then(data => {
         should(data).be.eql({ count: 10 })
         done()

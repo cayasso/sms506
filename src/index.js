@@ -57,9 +57,9 @@ export default (apiKey, options = {}) => {
     return parsed[0].replace('+506', '')
   }
 
-  async function send(url, key) {
+  async function send(key, url, data) {
     try {
-      let res = await request(url)
+      let res = await request({ url, qs: data })
       res = responses[key][res] || res
       if ('object' === typeof res && res.error) {
         throw createError(res)
@@ -84,8 +84,7 @@ export default (apiKey, options = {}) => {
   async function sms(to, text) {
     if (!(to = toPhone(to))) throw createError(responses['sms']['10'])
     if (!text) throw createError(responses['sms']['20'])
-    text = encodeURIComponent(text.trim())
-    return await send(`${host}/sms/${apiKey}/?telf=${to}&txt=${text}`, 'sms')
+    return await send('sms', `${host}/sms/${apiKey}`, { telf: to, txt: text.trim() })
   }
 
   /**
@@ -103,7 +102,7 @@ export default (apiKey, options = {}) => {
     ? _date.format(`0-${_date._f}`)
     : _date.format('DD-MM-YYYY')
     if ('Invalid date' === date) throw createError(responses['smsin']['400'])
-    const res = await send(`${host}/smsin/${apiKey}/json/${date}`, 'smsin')
+    const res = await send('smsin', `${host}/smsin/${apiKey}/json/${date}`)
     try {
       return JSON.parse(res)
     } catch(e) {
@@ -123,7 +122,7 @@ export default (apiKey, options = {}) => {
   async function stats(mon) {
     mon = !mon ? moment().format('M') : month(mon)
     if (!mon) throw createError(responses['stats']['-2'])
-    return { count: await send(`${host}/stat/${apiKey}/${mon*1}`, 'stats') * 1 }
+    return { count: await send('stats', `${host}/stat/${apiKey}/${mon*1}`) * 1 }
   }
 
   /**
@@ -134,7 +133,7 @@ export default (apiKey, options = {}) => {
    */
 
   async function balance() {
-    return { balance: await send(`${host}/balance/${apiKey}`, 'balance') * 1 }
+    return { balance: await send('balance', `${host}/balance/${apiKey}`) * 1 }
   }
 
   return { sms, smsin, stats, balance, host, apiKey }
