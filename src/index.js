@@ -1,11 +1,10 @@
 'use strict'
 
-import 'babel-polyfill'
-import phone from 'phone'
-import assert from 'assert'
-import moment from 'moment'
-import responses from './responses'
-import request from 'request-promise'
+const phone = require('phone')
+const assert = require('assert')
+const moment = require('moment')
+const responses = require('./responses')
+const request = require('request-promise')
 
 /**
  * Create API instance.
@@ -16,10 +15,10 @@ import request from 'request-promise'
  * @api public
  */
 
-export default (apiKey, options = {}) => {
+module.exports = (apiKey, options = {}) => {
   assert(apiKey, 'You must pass your sms506 API Key.')
   const { host = 'https://api.sms506.com' } = options
-  const allMonths = [...months('es'), ...months('en')]
+  const allMonths = [ ...months('es'), ...months('en') ]
 
   function createError(msg, code) {
     let error = new Error()
@@ -36,8 +35,8 @@ export default (apiKey, options = {}) => {
   function months(lan) {
     moment.locale(lan)
     return [
-      moment.months().map(m => m.toLowerCase()),
-      moment.monthsShort().map(m => m.toLowerCase().replace('.', ''))
+      moment.months().map((m) => m.toLowerCase()),
+      moment.monthsShort().map((m) => m.toLowerCase().replace('.', ''))
     ]
   }
 
@@ -66,7 +65,7 @@ export default (apiKey, options = {}) => {
       } else {
         return res
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e)
       throw createError(e.message, 500)
     }
@@ -97,15 +96,13 @@ export default (apiKey, options = {}) => {
 
   async function smsin(date) {
     if (!date) date = moment()
-    const _date = moment(date, ["DD/MM/YYYY", "DD-MM-YYYY", 'MM-YYYY'])
-    date = (_date._f === 'MM-YYYY')
-    ? _date.format(`0-${_date._f}`)
-    : _date.format('DD-MM-YYYY')
+    const _date = moment(date, [ 'DD/MM/YYYY', 'DD-MM-YYYY', 'MM-YYYY' ])
+    date = _date._f === 'MM-YYYY' ? _date.format(`0-${_date._f}`) : _date.format('DD-MM-YYYY')
     if ('Invalid date' === date) throw createError(responses['smsin']['400'])
     const res = await send('smsin', `${host}/smsin/${apiKey}/json/${date}`)
     try {
       return JSON.parse(res)
-    } catch(e) {
+    } catch (e) {
       console.log(e)
       return res
     }
@@ -122,7 +119,7 @@ export default (apiKey, options = {}) => {
   async function stats(mon) {
     mon = !mon ? moment().format('M') : month(mon)
     if (!mon) throw createError(responses['stats']['-2'])
-    return { count: await send('stats', `${host}/stat/${apiKey}/${mon*1}`) * 1 }
+    return { count: (await send('stats', `${host}/stat/${apiKey}/${mon * 1}`)) * 1 }
   }
 
   /**
@@ -133,7 +130,7 @@ export default (apiKey, options = {}) => {
    */
 
   async function balance() {
-    return { balance: await send('balance', `${host}/balance/${apiKey}`) * 1 }
+    return { balance: (await send('balance', `${host}/balance/${apiKey}`)) * 1 }
   }
 
   return { sms, smsin, stats, balance, host, apiKey }
