@@ -3,6 +3,5 @@ node_modules
 *.log
 .release.json
 local.json
-src
 test
 examples
